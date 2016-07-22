@@ -1,0 +1,5 @@
+wh:
+    resource: "@WHBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
