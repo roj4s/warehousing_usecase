@@ -3,7 +3,6 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Transporter
@@ -71,38 +70,5 @@ class Transporter
     {
         return $this->label;
     }
-
-    /**
-     * Add log
-     *
-     * @param \Warehousing\WHBundle\Entity\Log $log
-     *
-     * @return Transporter
-     */
-    public function addLog(\Warehousing\WHBundle\Entity\Log $log)
-    {
-        $this->logs[] = $log;
-
-        return $this;
-    }
-
-    /**
-     * Remove log
-     *
-     * @param \Warehousing\WHBundle\Entity\Log $log
-     */
-    public function removeLog(\Warehousing\WHBundle\Entity\Log $log)
-    {
-        $this->logs->removeElement($log);
-    }
-
-    /**
-     * Get logs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogs()
-    {
-        return $this->logs;
-    }
 }
+

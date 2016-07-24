@@ -3,6 +3,7 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Master
@@ -196,5 +197,72 @@ class Master
     {
         return $this->code;
     }
-}
 
+    /**
+     * Add imei
+     *
+     * @param \Warehousing\WHBundle\Entity\Imei $imei
+     *
+     * @return Master
+     */
+    public function addImei(\Warehousing\WHBundle\Entity\Imei $imei)
+    {
+        $this->imeis[] = $imei;
+
+        return $this;
+    }
+
+    /**
+     * Remove imei
+     *
+     * @param \Warehousing\WHBundle\Entity\Imei $imei
+     */
+    public function removeImei(\Warehousing\WHBundle\Entity\Imei $imei)
+    {
+        $this->imeis->removeElement($imei);
+    }
+
+    /**
+     * Get imeis
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImeis()
+    {
+        return $this->imeis;
+    }
+
+    /**
+     * Add logItem
+     *
+     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
+     *
+     * @return Master
+     */
+    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
+    {
+        $this->log_items[] = $logItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove logItem
+     *
+     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
+     */
+    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
+    {
+        $this->log_items->removeElement($logItem);
+    }
+
+    /**
+     * Get logItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogItems()
+    {
+        return $this->log_items;
+    }
+}

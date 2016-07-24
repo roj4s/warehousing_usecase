@@ -3,7 +3,6 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Imei
@@ -222,38 +221,5 @@ class Imei
     {
         return $this->code;
     }
-
-    /**
-     * Add logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     *
-     * @return Imei
-     */
-    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items[] = $logItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     */
-    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items->removeElement($logItem);
-    }
-
-    /**
-     * Get logItems
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogItems()
-    {
-        return $this->log_items;
-    }
 }
+

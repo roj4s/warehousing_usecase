@@ -1,0 +1,22 @@
+{% macro tree_element(text, idents=0, table_name = "", table_id = "", enabled=true) %}
+<div>
+	{% for i in 0..idents %}
+		&nbsp;
+	{% endfor %}
+
+	<span>{{ text }}</span>
+
+	{% set color = "blue" %}
+	{% set cursor =  "hand_cursor" %}
+
+	{% if not enabled %}
+		{% set color = "red" %}
+		{% set cursor = "forbbiden_cursor" %}
+	{% endif %}
+
+	<div style="plus_minus_bt_div">
+		<span table_name = "{{ table_name }}" table_id = "{{ table_id }}" class="glyphicon glyphicon-plus {{ cursor }} {{ color }}"></span>
+        <span table_name = "{{ table_name }}" table_id = "{{ table_id }}" class="glyphicon glyphicon-minus {{ cursor }} {{ color }}"></span>
+    </div>
+</div>
+{% endmacro %}

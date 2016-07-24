@@ -3,7 +3,6 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Log
@@ -139,62 +138,5 @@ class Log
     {
         return $this->date;
     }
-
-    /**
-     * Set transporter
-     *
-     * @param \Warehousing\WHBundle\Entity\Transporter $transporter
-     *
-     * @return Log
-     */
-    public function setTransporter(\Warehousing\WHBundle\Entity\Transporter $transporter = null)
-    {
-        $this->transporter = $transporter;
-
-        return $this;
-    }
-
-    /**
-     * Get transporter
-     *
-     * @return \Warehousing\WHBundle\Entity\Transporter
-     */
-    public function getTransporter()
-    {
-        return $this->transporter;
-    }
-
-    /**
-     * Add logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     *
-     * @return Log
-     */
-    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items[] = $logItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     */
-    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items->removeElement($logItem);
-    }
-
-    /**
-     * Get logItems
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogItems()
-    {
-        return $this->log_items;
-    }
 }
+

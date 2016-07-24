@@ -11,7 +11,8 @@ class DefaultController extends Controller
      * @Route("/")
      */
     public function indexAction()
-    {
-        return $this->render('WHBundle:Default:index.html.twig');
+    {	
+    	$warehouses = $this->getDoctrine()->getRepository("WHBundle:Warehouse")->findAll();
+        return $this->render('WHBundle:Default:index.html.twig', array('warehouses' => $warehouses));
     }
 }

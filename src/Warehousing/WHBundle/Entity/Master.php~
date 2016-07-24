@@ -3,15 +3,14 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Imei
+ * Master
  *
- * @ORM\Table(name="imei")
- * @ORM\Entity(repositoryClass="Warehousing\WHBundle\Repository\ImeiRepository")
+ * @ORM\Table(name="master")
+ * @ORM\Entity(repositoryClass="Warehousing\WHBundle\Repository\MasterRepository")
  */
-class Imei
+class Master
 {
     /**
      * @var int
@@ -23,36 +22,35 @@ class Imei
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Warehouse", inversedBy="imeis_current")
-     * @ORM\JoinColumn(name="warehouse_current_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Warehouse", inversedBy="masters_current")
+     * @ORM\JoinColumn(name="warehouse_current_id", referencedColumnName="id") 
      */
     private $warehouseCurrent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Warehouse", inversedBy="imeis_arriving")
+     * @ORM\ManyToOne(targetEntity="Warehouse", inversedBy="masters_arriving")
      * @ORM\JoinColumn(name="warehouse_destiny_id", referencedColumnName="id")
      */
     private $warehouseDestiny;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Master", inversedBy="imeis")
-     * @ORM\JoinColumn(name="master_id", referencedColumnName="id") 
-     */
-    private $master;
+     /**
+    *  @ORM\OneToMany(targetEntity="Imei", mappedBy="master") 
+    */
+    private $imeis;
 
-        /**
-    *  @ORM\OneToMany(targetEntity="LogDesc", mappedBy="imei") 
+    /**
+    *  @ORM\OneToMany(targetEntity="LogDesc", mappedBy="master") 
     */
     private $log_items;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="imeis")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Pallet", inversedBy="masters")
+     * @ORM\JoinColumn(name="pallet_id", referencedColumnName="id")
      */
-    private $product;
+    private $pallet;
 
     /**
-      * @ORM\ManyToOne(targetEntity="Status", inversedBy="imeis")
+     * @ORM\ManyToOne(targetEntity="Status", inversedBy="masters")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
      */
     private $status;
@@ -64,8 +62,8 @@ class Imei
      */
     private $code;
 
-
     public function __construct(){
+        $this->imeis = new ArrayCollection();
         $this->log_items = new ArrayCollection();
     }
 
@@ -84,7 +82,7 @@ class Imei
      *
      * @param integer $warehouseCurrent
      *
-     * @return Imei
+     * @return Master
      */
     public function setWarehouseCurrent($warehouseCurrent)
     {
@@ -108,7 +106,7 @@ class Imei
      *
      * @param integer $warehouseDestiny
      *
-     * @return Imei
+     * @return Master
      */
     public function setWarehouseDestiny($warehouseDestiny)
     {
@@ -128,51 +126,27 @@ class Imei
     }
 
     /**
-     * Set master
+     * Set pallet
      *
-     * @param integer $master
+     * @param integer $pallet
      *
-     * @return Imei
+     * @return Master
      */
-    public function setMaster($master)
+    public function setPallet($pallet)
     {
-        $this->master = $master;
+        $this->pallet = $pallet;
 
         return $this;
     }
 
     /**
-     * Get master
+     * Get pallet
      *
      * @return int
      */
-    public function getMaster()
+    public function getPallet()
     {
-        return $this->master;
-    }
-
-    /**
-     * Set product
-     *
-     * @param integer $product
-     *
-     * @return Imei
-     */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get product
-     *
-     * @return int
-     */
-    public function getProduct()
-    {
-        return $this->product;
+        return $this->pallet;
     }
 
     /**
@@ -180,7 +154,7 @@ class Imei
      *
      * @param integer $status
      *
-     * @return Imei
+     * @return Master
      */
     public function setStatus($status)
     {
@@ -204,7 +178,7 @@ class Imei
      *
      * @param string $code
      *
-     * @return Imei
+     * @return Master
      */
     public function setCode($code)
     {
@@ -222,38 +196,5 @@ class Imei
     {
         return $this->code;
     }
-
-    /**
-     * Add logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     *
-     * @return Imei
-     */
-    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items[] = $logItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     */
-    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items->removeElement($logItem);
-    }
-
-    /**
-     * Get logItems
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogItems()
-    {
-        return $this->log_items;
-    }
 }
+

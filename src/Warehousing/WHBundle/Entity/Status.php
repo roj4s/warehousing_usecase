@@ -3,6 +3,7 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Status
@@ -83,5 +84,106 @@ class Status
     {
         return $this->label;
     }
-}
 
+    /**
+     * Add pallet
+     *
+     * @param \Warehousing\WHBundle\Entity\Pallet $pallet
+     *
+     * @return Status
+     */
+    public function addPallet(\Warehousing\WHBundle\Entity\Pallet $pallet)
+    {
+        $this->pallets[] = $pallet;
+
+        return $this;
+    }
+
+    /**
+     * Remove pallet
+     *
+     * @param \Warehousing\WHBundle\Entity\Pallet $pallet
+     */
+    public function removePallet(\Warehousing\WHBundle\Entity\Pallet $pallet)
+    {
+        $this->pallets->removeElement($pallet);
+    }
+
+    /**
+     * Get pallets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPallets()
+    {
+        return $this->pallets;
+    }
+
+    /**
+     * Add master
+     *
+     * @param \Warehousing\WHBundle\Entity\Master $master
+     *
+     * @return Status
+     */
+    public function addMaster(\Warehousing\WHBundle\Entity\Master $master)
+    {
+        $this->masters[] = $master;
+
+        return $this;
+    }
+
+    /**
+     * Remove master
+     *
+     * @param \Warehousing\WHBundle\Entity\Master $master
+     */
+    public function removeMaster(\Warehousing\WHBundle\Entity\Master $master)
+    {
+        $this->masters->removeElement($master);
+    }
+
+    /**
+     * Get masters
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMasters()
+    {
+        return $this->masters;
+    }
+
+    /**
+     * Add imei
+     *
+     * @param \Warehousing\WHBundle\Entity\Imei $imei
+     *
+     * @return Status
+     */
+    public function addImei(\Warehousing\WHBundle\Entity\Imei $imei)
+    {
+        $this->imeis[] = $imei;
+
+        return $this;
+    }
+
+    /**
+     * Remove imei
+     *
+     * @param \Warehousing\WHBundle\Entity\Imei $imei
+     */
+    public function removeImei(\Warehousing\WHBundle\Entity\Imei $imei)
+    {
+        $this->imeis->removeElement($imei);
+    }
+
+    /**
+     * Get imeis
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImeis()
+    {
+        return $this->imeis;
+    }
+}

@@ -1,0 +1,33 @@
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        	<div class = "well"
+    		   		
+	          <ul class="nav nav-sidebar nav-list">
+	          	{% for wh in warehouses %}		          	 
+	            <li><label class="tree-toggle nav-header">{{ wh.label }}</label>
+	            	<ul class="nav nav-list tree">
+	            		{% for pallet in wh.getPalletsCurrent() %}
+	            		<li><label class="tree-toggle">{{ pallet.code }}</label>
+	            			<ul class="nav nav-list tree">
+	            				{% for master in pallet.masters %}
+	            				<li><label class="tree-toggle">{{ master.code }}</label>
+	            				<ul class="nav nav-list tree">
+	            					{% for imei in master.imeis %}
+	            						<li><a href="#">{{ imei.code }}</a></li>
+	            					{% endfor %}
+	            				</ul>
+	            				</li>	            				
+	            				{% endfor %}
+	            			</ul>
+	            			</li>
+	            		{% endfor %}
+	            	</ul>
+	            	</li>
+	            {% endfor %}
+	           
+	           </ul>
+	        </div>
+		</div>
+	</div>
+</div>

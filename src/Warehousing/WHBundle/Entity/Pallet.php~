@@ -3,7 +3,6 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Pallet
@@ -60,7 +59,7 @@ class Pallet
 
     public function __construct()
     {
-        $this->masters = new ArrayCollection();
+        $this->masters = new ArrayColection();
     }
 
     /**
@@ -168,72 +167,5 @@ class Pallet
     {
         return $this->code;
     }
-
-    /**
-     * Add logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     *
-     * @return Pallet
-     */
-    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items[] = $logItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove logItem
-     *
-     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
-     */
-    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
-    {
-        $this->log_items->removeElement($logItem);
-    }
-
-    /**
-     * Get logItems
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogItems()
-    {
-        return $this->log_items;
-    }
-
-    /**
-     * Add master
-     *
-     * @param \Warehousing\WHBundle\Entity\Master $master
-     *
-     * @return Pallet
-     */
-    public function addMaster(\Warehousing\WHBundle\Entity\Master $master)
-    {
-        $this->masters[] = $master;
-
-        return $this;
-    }
-
-    /**
-     * Remove master
-     *
-     * @param \Warehousing\WHBundle\Entity\Master $master
-     */
-    public function removeMaster(\Warehousing\WHBundle\Entity\Master $master)
-    {
-        $this->masters->removeElement($master);
-    }
-
-    /**
-     * Get masters
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMasters()
-    {
-        return $this->masters;
-    }
 }
+
