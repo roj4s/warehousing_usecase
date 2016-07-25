@@ -3,6 +3,7 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Imei
@@ -63,6 +64,36 @@ class Imei
      */
     private $code;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="locked", type="integer")
+     */
+    private $locked;
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return $this->locked == 1;
+    }
+
+
+    /**
+     * Set locked
+     *
+     * @param integer $locked
+     *
+     * @return Imei
+     */
+    public function setLocked($locked){
+        $this->locked = $locked;
+        return $this;
+    }
+
 
     public function __construct(){
         $this->log_items = new ArrayCollection();
@@ -77,6 +108,8 @@ class Imei
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set warehouseCurrent
@@ -221,5 +254,38 @@ class Imei
     {
         return $this->code;
     }
-}
 
+    /**
+     * Add logItem
+     *
+     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
+     *
+     * @return Imei
+     */
+    public function addLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
+    {
+        $this->log_items[] = $logItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove logItem
+     *
+     * @param \Warehousing\WHBundle\Entity\LogDesc $logItem
+     */
+    public function removeLogItem(\Warehousing\WHBundle\Entity\LogDesc $logItem)
+    {
+        $this->log_items->removeElement($logItem);
+    }
+
+    /**
+     * Get logItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogItems()
+    {
+        return $this->log_items;
+    }
+}

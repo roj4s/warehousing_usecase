@@ -51,6 +51,35 @@ class Pallet
     private $status;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="locked", type="integer")
+     */
+    private $locked;
+
+    /**
+     * Is locked
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return $this->locked == 1;
+    }
+
+    /**
+     * Set locked
+     *
+     * @param integer $locked
+     *
+     * @return Pallet
+     */
+    public function setLocked($locked){
+        $this->locked = $locked;
+        return $this;
+    }
+
+    /**
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=50)
@@ -235,5 +264,15 @@ class Pallet
     public function getMasters()
     {
         return $this->masters;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return integer
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }

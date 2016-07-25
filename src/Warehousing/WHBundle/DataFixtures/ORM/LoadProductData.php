@@ -10,7 +10,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        for ($i=0; $i <30 ; $i++) { 
+        for ($i=0; $i <200 ; $i++) { 
         
         	$new_p = new Product();
             $code = "Pro_".base64_encode(random_bytes(10));

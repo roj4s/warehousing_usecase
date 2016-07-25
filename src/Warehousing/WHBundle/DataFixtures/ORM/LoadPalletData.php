@@ -16,7 +16,7 @@ class LoadPalletData extends AbstractFixture implements OrderedFixtureInterface
 
     	$p_with_equal_src_and_dest = rand(4, 10);
 
-    	for ($i=0; $i <20 ; $i++) { 
+    	for ($i=0; $i < 20 ; $i++) { 
     		
     		$new_pallet = $this->generate_a_pallet($some_warehouses, $status);
         	
@@ -32,6 +32,17 @@ class LoadPalletData extends AbstractFixture implements OrderedFixtureInterface
         	
     	}
 
+        for ($i=0; $i < 100; $i++) { 
+           $new_pallet = new Pallet();
+           $new_pallet->setLocked(0);
+           $random_code = "P_" . base64_encode(random_bytes(6));
+           $new_pallet->setCode($random_code);
+           shuffle($some_warehouses);
+           $new_pallet->setWarehouseCurrent($some_warehouses[0]);
+           $new_pallet->setStatus($manager->getRepository("WHBundle:Status")->findOneByLabel("In Stock"));
+           $manager->persist($new_pallet);
+        }
+
         
         $manager->flush();
     }
@@ -39,6 +50,7 @@ class LoadPalletData extends AbstractFixture implements OrderedFixtureInterface
     private function generate_a_pallet($some_warehouses, $status){
 
     	$new_pallet = new Pallet();
+        $new_pallet->setLocked(random_int(0, 1));
         $random_code = "P_" . base64_encode(random_bytes(6));
         $new_pallet->setCode($random_code);
         shuffle($some_warehouses);

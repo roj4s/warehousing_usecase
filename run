@@ -1,0 +1,5 @@
+#!/bin/bash
+
+php bin/console cache:clear 
+php bin/console assetic:dump
+php bin/console server:run -v

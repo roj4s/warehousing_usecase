@@ -13,8 +13,8 @@
 
     {% stylesheets
       '@bootstrap_css'
-      'css/wh.css'
-    filter='cssrewrite' output='css/compiled/app.css' %}
+      '@wh_css'
+    filter='cssrewrite' output='css/app.css' %}
 
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 
@@ -38,7 +38,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Generate new dataset</a></li>            
+            <li><a href="/">Reload for new wh admin</a></li>            
           </ul>
         </div>
       </div>
@@ -46,13 +46,10 @@
 
 
     {#Side bar tree panel with warehouse assets. #}
-    {% include 'WHBundle:Default:side_bar_tree_panel.html.twig' with { 'warehouses': warehouses } only %}
+    {% include 'WHBundle:Default:side_bar_tree_panel.html.twig' %}
     
-
-
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+        <div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-4 main">
+          <h1 class="page-header">Contracts</h1>
 
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
@@ -69,30 +66,15 @@
             </div>
           </div>
 
-          <h2 class="sub-header">Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                
-              </tbody>
-            </table>
+
+
+          <h2 class="sub-header">Current shipment</h2>
+          {% include 'WHBundle:Default:shipment_panel.html.twig' %}
+
+           <div class="row">
+              {% include 'WHBundle:Default:contracts_panel.html.twig' %}
           </div>
+
         </div>
       </div>
     </div>
@@ -101,8 +83,8 @@
       {% javascripts
         '@jquery' 
         '@bootstrap_js'
-        '@wh'
-        output='js/compiled/app.js'
+        '@wh_js'
+        output='js/app.js'
        %}
     
           <script type="text/javascript" src="{{ asset_url }}"></script>

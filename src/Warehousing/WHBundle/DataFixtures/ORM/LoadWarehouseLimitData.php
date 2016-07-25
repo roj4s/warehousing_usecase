@@ -13,18 +13,27 @@ class LoadWarehouseLimitData extends AbstractFixture implements OrderedFixtureIn
 
         $warehouses = $manager->getRepository("WHBundle:Warehouse")->findAll();
 
-        for ($i=0; $i <30 ; $i++) { 
-        
-        	$new_wl = new WarehouseLimits();
-            $limit = random_int(1, 15) / random_int(1, 10);
-            $new_wl->setWhLimit($limit);
-            shuffle($warehouses);
-            $new_wl->setWarehouseOrigin($warehouses[0]);
-            $new_wl->setWarehouseTarget($warehouses[3]);
 
 
-            $manager->persist($new_wl);
-        }
+        for ($i=0; $i < count($warehouses) -1 ; $i++) { 
+            for ($j=1; $j< count($warehouses); $j++) { 
+                
+                $new_wl = new WarehouseLimits();
+                $limit = random_int(1, 15) / random_int(1, 10);
+                $new_wl->setWarehouseOrigin($warehouses[$i]);
+                $new_wl->setWarehouseTarget($warehouses[$j]);
+                $new_wl->setWhLimit($limit);
+                $manager->persist($new_wl);
+
+                $rev = new WarehouseLimits();
+                $limit = random_int(1, 15) / random_int(1, 10);
+                $rev->setWarehouseOrigin($warehouses[$j]);
+                $rev->setWarehouseTarget($warehouses[$i]);
+                $rev->setWhLimit($limit);
+                $manager->persist($rev);
+
+                }            
+            }
 
         $manager->flush();
     }

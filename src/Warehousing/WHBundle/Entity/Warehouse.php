@@ -29,6 +29,10 @@ class Warehouse
      */
     private $label;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Admin", mappedBy="warehouses")
+     */
+    private $admins;
 
     /**
     *  @ORM\OneToMany(targetEntity="Pallet", mappedBy="warehouseCurrent") 
@@ -132,6 +136,7 @@ class Warehouse
         $this->warehouses_limit_target =  new ArrayCollection();
         $this->logs_source =  new ArrayCollection();
         $this->logs_destiny =  new ArrayCollection();
+        $this->admins = new ArrayCollection();
     }
 
 
@@ -473,5 +478,73 @@ class Warehouse
     public function getImeisArriving()
     {
         return $this->imeis_arriving;
+    }
+
+    /**
+     * Add admin
+     *
+     * @param \Warehousing\WHBundle\Entity\Admin $admin
+     *
+     * @return Warehouse
+     */
+    public function addAdmin(\Warehousing\WHBundle\Entity\Admin $admin)
+    {
+        $this->admins[] = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Remove admin
+     *
+     * @param \Warehousing\WHBundle\Entity\Admin $admin
+     */
+    public function removeAdmin(\Warehousing\WHBundle\Entity\Admin $admin)
+    {
+        $this->admins->removeElement($admin);
+    }
+
+    /**
+     * Get admins
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
+    }
+
+    /**
+     * Add mastersCurrent
+     *
+     * @param \Warehousing\WHBundle\Entity\Master $mastersCurrent
+     *
+     * @return Warehouse
+     */
+    public function addMastersCurrent(\Warehousing\WHBundle\Entity\Master $mastersCurrent)
+    {
+        $this->masters_current[] = $mastersCurrent;
+
+        return $this;
+    }
+
+    /**
+     * Remove mastersCurrent
+     *
+     * @param \Warehousing\WHBundle\Entity\Master $mastersCurrent
+     */
+    public function removeMastersCurrent(\Warehousing\WHBundle\Entity\Master $mastersCurrent)
+    {
+        $this->masters_current->removeElement($mastersCurrent);
+    }
+
+    /**
+     * Get mastersCurrent
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMastersCurrent()
+    {
+        return $this->masters_current;
     }
 }

@@ -11,7 +11,7 @@ class LoadWarehouseData extends AbstractFixture implements OrderedFixtureInterfa
     public function load(ObjectManager $manager)
     {
 
-    	for ($i=0; $i <20 ; $i++) { 
+    	for ($i=0; $i <5 ; $i++) { 
 
     		$new_warehouse = new Warehouse();
         	$random_label = "WH_" . base64_encode(random_bytes(6));

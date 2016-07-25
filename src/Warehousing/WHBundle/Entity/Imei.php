@@ -64,6 +64,36 @@ class Imei
      */
     private $code;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="locked", type="integer")
+     */
+    private $locked;
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return $this->locked == 1;
+    }
+
+
+    /**
+     * Set locked
+     *
+     * @param integer $locked
+     *
+     * @return Imei
+     */
+    public function setLocked($locked){
+        $this->locked = $locked;
+        return $this;
+    }
+
 
     public function __construct(){
         $this->log_items = new ArrayCollection();
@@ -78,6 +108,8 @@ class Imei
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set warehouseCurrent
@@ -255,5 +287,15 @@ class Imei
     public function getLogItems()
     {
         return $this->log_items;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return integer
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }

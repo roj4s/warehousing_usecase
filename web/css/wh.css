@@ -1,9 +1,29 @@
-.blue{
-	color:blue;
+.locked{
+  color: gray;
+  cursor: not-allowed;
 }
 
-.hand_cursor{
-	cursor: pointer;
+.minus_unlocked{
+  color: red;
+  cursor: pointer;
+}
+
+td{
+  text-align: center;
+}
+
+.plus_unlocked{
+  color: green;
+  cursor: pointer;
+}
+
+.tree_element{
+  padding: 5px;
+  display: inline;
+}
+
+li{
+  padding: 10px;
 }
 
 .forbbiden_cursor{
@@ -11,7 +31,7 @@
 }
 
 .plus_minus_bt_div{
-	padding:20px;
+	/*padding:20px;*/
 	display:inline;
 }
 

@@ -1,20 +1,28 @@
+{% from "WHBundle:Default:tree_atomic_element.html.twig" import tree_element as te %}
 <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-        	<div class = "well"
-    		   		
+      {# <dir></dir>v class="row"> #}
+        <div class="col-sm-3 col-md-4 sidebar">
+        	<div class = "well">
+    		  <div style="padding:20px;">
 	          <ul class="nav nav-sidebar nav-list">
+
 	          	{% for wh in warehouses %}		          	 
-	            <li><label class="tree-toggle nav-header">{{ wh.label }}</label>
+	            <li>
+	            	{% if wh.getPalletsCurrent()|length > 0 %}
+	            		<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;
+	            	{% endif %}
+	            	<label class="tree-toggle nav-header">{{ wh.label }}&nbsp;&nbsp;<span class="badge">{{ wh.getPalletsCurrent()|length }}</span></label>
+
 	            	<ul class="nav nav-list tree">
+
 	            		{% for pallet in wh.getPalletsCurrent() %}
-	            		<li><label class="tree-toggle">{{ pallet.code }}</label>
+	            		<li>{{ te(pallet.code, 1, "pallet", pallet.id,(( not pallet.isLocked() ) and pallet.getStatus().getLabel() == "In Stock"), pallet.getMasters()|length, pallet.getMasters()|length > 0) }}
 	            			<ul class="nav nav-list tree">
 	            				{% for master in pallet.masters %}
-	            				<li><label class="tree-toggle">{{ master.code }}</label>
+	            				<li>{{ te(master.code, 2, "master", master.id, (( not master.isLocked() ) and master.getStatus().getLabel() == "In Stock"), master.getImeis()|length, master.getImeis()|length > 0) }}
 	            				<ul class="nav nav-list tree">
 	            					{% for imei in master.imeis %}
-	            						<li><a href="#">{{ imei.code }}</a></li>
+	            						<li>{{ te(imei.code, 3, "imei", imei.id,(( not imei.isLocked()) and imei.getStatus().getLabel() == "In Stock")) }}</li>
 	            					{% endfor %}
 	            				</ul>
 	            				</li>	            				
@@ -25,9 +33,9 @@
 	            	</ul>
 	            	</li>
 	            {% endfor %}
-	           
 	           </ul>
+	       	   </div>
 	        </div>
 		</div>
-	</div>
+	{# </div> #}
 </div>

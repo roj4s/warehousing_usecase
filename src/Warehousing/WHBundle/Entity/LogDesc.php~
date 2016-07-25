@@ -3,6 +3,7 @@
 namespace Warehousing\WHBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * LogDesc
@@ -152,4 +153,3 @@ class LogDesc
         return $this->imei;
     }
 }
-

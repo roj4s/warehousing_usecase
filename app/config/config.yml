@@ -85,6 +85,11 @@ assetic:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.css'
             filters: [cssrewrite]
 
+        wh_css:
+            inputs:
+                - '%kernel.root_dir%/../web/css/wh.css'
+            filters: [cssrewrite]
+
         bootstrap_glyphicons_ttf:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf'
@@ -106,6 +111,7 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
 
-        wh:
+        wh_js:
             inputs:
                 - '%kernel.root_dir%/../web/js/wh.js'
+

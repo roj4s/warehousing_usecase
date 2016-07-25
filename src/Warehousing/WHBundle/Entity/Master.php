@@ -69,6 +69,34 @@ class Master
     }
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="locked", type="integer")
+     */
+    private $locked;
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return $this->locked == 1;
+    }
+
+    /**
+     * Set locked
+     *
+     * @param integer $locked
+     *
+     * @return Master
+     */
+    public function setLocked($locked){
+        $this->locked = $locked;
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -264,5 +292,15 @@ class Master
     public function getLogItems()
     {
         return $this->log_items;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return integer
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }
