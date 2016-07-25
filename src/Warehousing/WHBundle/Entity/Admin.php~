@@ -99,5 +99,28 @@ class Admin
     {
         return $this->warehouses;
     }
-}
 
+    /**
+     * Add warehouse
+     *
+     * @param \Warehousing\WHBundle\Entity\Warehouse $warehouse
+     *
+     * @return Admin
+     */
+    public function addWarehouse(\Warehousing\WHBundle\Entity\Warehouse $warehouse)
+    {
+        $this->warehouses[] = $warehouse;
+
+        return $this;
+    }
+
+    /**
+     * Remove warehouse
+     *
+     * @param \Warehousing\WHBundle\Entity\Warehouse $warehouse
+     */
+    public function removeWarehouse(\Warehousing\WHBundle\Entity\Warehouse $warehouse)
+    {
+        $this->warehouses->removeElement($warehouse);
+    }
+}

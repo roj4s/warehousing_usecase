@@ -71,6 +71,24 @@ class Imei
      */
     private $locked;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="not_transferable", type="integer")
+     */
+    private $not_transferable;
+
+     /**
+     * Get transferable
+     *
+     * @return boolean
+     */
+    public function isNotTransferable()
+    {
+        return $this->not_transferable == 1;
+    }
+
     /**
      * Get locked
      *
@@ -80,6 +98,8 @@ class Imei
     {
         return $this->locked == 1;
     }
+
+   
 
 
     /**
@@ -287,5 +307,15 @@ class Imei
     public function getLogItems()
     {
         return $this->log_items;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return integer
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }

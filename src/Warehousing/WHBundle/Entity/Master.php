@@ -75,6 +75,8 @@ class Master
      */
     private $locked;
 
+
+
     /**
      * Get locked
      *
@@ -83,6 +85,24 @@ class Master
     public function isLocked()
     {
         return $this->locked == 1;
+    }
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="not_transferable", type="integer")
+     */
+    private $not_transferable;
+
+     /**
+     * Get transferable
+     *
+     * @return boolean
+     */
+    public function isNotTransferable()
+    {
+        return $this->not_transferable == 1;
     }
 
     /**
@@ -302,5 +322,29 @@ class Master
     public function getLocked()
     {
         return $this->locked;
+    }
+
+    /**
+     * Set notTransferable
+     *
+     * @param integer $notTransferable
+     *
+     * @return Master
+     */
+    public function setNotTransferable($notTransferable)
+    {
+        $this->not_transferable = $notTransferable;
+
+        return $this;
+    }
+
+    /**
+     * Get notTransferable
+     *
+     * @return integer
+     */
+    public function getNotTransferable()
+    {
+        return $this->not_transferable;
     }
 }

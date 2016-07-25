@@ -93,19 +93,19 @@ assetic:
         bootstrap_glyphicons_ttf:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf'
-            output: "fonts/glyphicons-halflings-regular.ttf"
+            output: "fonts/glyphicons-halflings-regular.ttf2"
         bootstrap_glyphicons_eot:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot'
-            output: "fonts/glyphicons-halflings-regular.eot"
+            output: "fonts/glyphicons-halflings-regular.eot2"
         bootstrap_glyphicons_svg:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg'
-            output: "fonts/glyphicons-halflings-regular.svg"
+            output: "fonts/glyphicons-halflings-regular.svg2"
         bootstrap_glyphicons_woff:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
-            output: "fonts/glyphicons-halflings-regular.woff"
+            output: "fonts/glyphicons-halflings-regular.woff2"
 
         jquery:
             inputs:
@@ -114,4 +114,8 @@ assetic:
         wh_js:
             inputs:
                 - '%kernel.root_dir%/../web/js/wh.js'
+
+        notifier_js:
+            inputs:
+                - '%kernel.root_dir%/../web/js/notify.min.js'
 

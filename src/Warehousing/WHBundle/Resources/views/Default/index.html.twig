@@ -49,6 +49,9 @@
     {% include 'WHBundle:Default:side_bar_tree_panel.html.twig' %}
     
         <div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-4 main">
+
+        <div class="row top-buffer"></div>
+
           <h1 class="page-header">Contracts</h1>
 
           <div class="row placeholders">
@@ -67,7 +70,6 @@
           </div>
 
 
-
           <h2 class="sub-header">Current shipment</h2>
           {% include 'WHBundle:Default:shipment_panel.html.twig' %}
 
@@ -84,6 +86,7 @@
         '@jquery' 
         '@bootstrap_js'
         '@wh_js'
+        '@notifier_js'
         output='js/app.js'
        %}
     

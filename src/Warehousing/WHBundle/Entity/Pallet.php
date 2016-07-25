@@ -68,6 +68,23 @@ class Pallet
     }
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="not_transferable", type="integer")
+     */
+    private $not_transferable;
+
+     /**
+     * Get transferable
+     *
+     * @return boolean
+     */
+    public function isNotTransferable()
+    {
+        return $this->not_transferable == 1;
+    }
+
+    /**
      * Set locked
      *
      * @param integer $locked
@@ -274,5 +291,29 @@ class Pallet
     public function getLocked()
     {
         return $this->locked;
+    }
+
+    /**
+     * Set notTransferable
+     *
+     * @param integer $notTransferable
+     *
+     * @return Pallet
+     */
+    public function setNotTransferable($notTransferable)
+    {
+        $this->not_transferable = $notTransferable;
+
+        return $this;
+    }
+
+    /**
+     * Get notTransferable
+     *
+     * @return integer
+     */
+    public function getNotTransferable()
+    {
+        return $this->not_transferable;
     }
 }
