@@ -1,6 +1,6 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: 127.0.0.1
+    database_host: ec2-107-20-166-28.compute-1.amazonaws.com
     database_port: 5432
     database_name: ddsme210i1vus
     database_user: jzldeyblxfioso
