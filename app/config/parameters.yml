@@ -2,9 +2,9 @@
 parameters:
     database_host: 127.0.0.1
     database_port: 5432
-    database_name: warehousing
-    database_user: warehousing_db_admin
-    database_password: w4r3h0us1ngp4ss
+    database_name: ddsme210i1vus
+    database_user: jzldeyblxfioso
+    database_password:  zD2LXtfsdLaFQG0Vf9VD94G0nL
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
