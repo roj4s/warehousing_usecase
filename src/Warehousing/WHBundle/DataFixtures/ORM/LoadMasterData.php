@@ -44,6 +44,7 @@ class LoadMasterData extends AbstractFixture implements OrderedFixtureInterface
     private function generate_a_master($pallets){
 
     	$new_master = new Master();
+        $new_master->setNotTransferable(0);
         $new_master->setLocked(0);
         $random_code = "M_" . base64_encode(random_bytes(6));
         $new_master->setCode($random_code);

@@ -34,6 +34,7 @@ class LoadPalletData extends AbstractFixture implements OrderedFixtureInterface
 
         for ($i=0; $i < 100; $i++) { 
            $new_pallet = new Pallet();
+           $new_pallet->setNotTransferable(0);
            $new_pallet->setLocked(0);
            $random_code = "P_" . base64_encode(random_bytes(6));
            $new_pallet->setCode($random_code);
@@ -50,6 +51,7 @@ class LoadPalletData extends AbstractFixture implements OrderedFixtureInterface
     private function generate_a_pallet($some_warehouses, $status){
 
     	$new_pallet = new Pallet();
+        $new_pallet->setNotTransferable(0);
         $new_pallet->setLocked(random_int(0, 1));
         $random_code = "P_" . base64_encode(random_bytes(6));
         $new_pallet->setCode($random_code);

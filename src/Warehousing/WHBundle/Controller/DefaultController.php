@@ -12,10 +12,10 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {	
     	
-        $this->resetSession($request->getSession());
+        $this->resetSession($this->get('session'));
 
         $admins = $this->getDoctrine()->getRepository("WHBundle:Admin")->findAll();
     	shuffle($admins);
@@ -34,7 +34,6 @@ class DefaultController extends Controller
         $doctrine = $this->getDoctrine()->getManager();
         $locked_repository = $doctrine->getRepository("WHBundle:Locked");
 
-        $session = $request->getSession();
         $stack = $session->get("stack", array());
 
         foreach ($stack as $id) {
@@ -80,9 +79,9 @@ class DefaultController extends Controller
 
 
     /**
-    * @Route("/api/submit/{destiny}")
+    * @Route("/api/submit/{destiny}/{transporter_id}")
     */
-    public function submitCurrentShipmentAction($destiny, Request $request){
+    public function submitCurrentShipmentAction($destiny, $trasporter_id, Request $request){
         // error types would be better hard coded though.
 
         $resp = new JsonResponse();
@@ -107,15 +106,18 @@ class DefaultController extends Controller
         
 
         $wh_repo = $doctrine->getRepository('WHBundle:Warehouse');
+
+        $wh_source = $wh_repo->find($working_warehouse);
         $wh_dest = $wh_repo->find($destiny);
+        $transporter = $doctrine->getRepository("WHBundle:Transporter")->find($transporter_id);
         
 
-        if(!$wh_dest){
+        if(!$wh_dest || !$wh_source || !$transporter){
 
             $resp->setData(array(
                 'ok'=>false,
-                'error_type' => 'warehouse_not_found',
-                'msg' => 'The specified destiny warehouse was not found.'
+                'error_type' => 'table_not_found',
+                'msg' => 'Some references was not found on database.'
                 ));
             return $resp;
         }
@@ -156,13 +158,25 @@ class DefaultController extends Controller
             return $resp;
         }
 
-        $in_destiny_status = $doctrine->getRepository("WHBundle:Status")->findOneBy()
+        $in_transit_status = $doctrine->getRepository("WHBundle:Status")->findOneBy(array("label"=>"In Transit"));
+        
+        $log = new Log();
+        $log->setWarehouseSource($wh_source);
+        $log->setWarehouseDestiny($wh_dest);
+        $log->setTransporter($transporter);
+        $log->setDate(new \DateTime());
+
+        $doctrine->persist($log);
+        $doctine->flush();
 
         foreach ($stack as $id) {
             
             $locked = $locked_repository->find($id);
             $table = $locked->getTableName();
             $table_id = $locked->getTableId();
+
+            $doctrine->remove($locked);
+            $doctrine->flush();
 
             switch ($table) {
                 case 'imei':
@@ -173,8 +187,21 @@ class DefaultController extends Controller
                         $imei->setNotTransferable(1);
 
                     $imei->setLocked(0);
+                    $imei->setStatus($in_transit_status);
 
                     $doctrine->persist($imei);
+                    $doctrine->flush();
+
+                    $new_log_desc = new LogDesc();
+                    $new_log_desc->setLog($log);
+                    $new_log_desc->setImei($imei);
+                    $master = $imei->getMaster();
+                    $new_log_desc->setMaster($master);
+                    $pallet = $master->getPallet();
+                    $new_log_desc->setPallet($pallet);
+
+                    $doctrine->persist($new_log_desc);
+                    $doctrine->flush();
 
                     break;
                 
@@ -183,12 +210,15 @@ class DefaultController extends Controller
                     $master->setLocked(0);
 
                     $master->setWarehouseDestiny($wh_dest);
+                    $master->setStatus($in_transit_status);
 
                     if($master->getWarehouseCurrent()->getId() == $master->getWarehouseDestiny()->getId())
                         $master->setNotTransferable(1);
 
 
                     $doctrine->persist($master);
+                    $doctrine->flush();
+
                     break;
 
                 case 'pallet':
@@ -196,11 +226,13 @@ class DefaultController extends Controller
                     $pallet->setLocked(0);
 
                     $pallet->setWarehouseDestiny($wh_dest);
+                    $pallet->setStatus($in_transit_status);
 
                     if($pallet->getWarehouseCurrent()->getId() == $pallet->getWarehouseDestiny()->getId())
                         $pallet->setNotTransferable(1);
 
                     $doctrine->persist($pallet);
+                    $doctrine->flush();
                     break;
 
                 default:
@@ -217,7 +249,7 @@ class DefaultController extends Controller
 
         $resp = array(
             'ok' => true,
-            'msg' => ""
+            'msg' => "",
             'error_type' => ""            
                 );
 
@@ -335,8 +367,10 @@ class DefaultController extends Controller
             }
         }
 
-        if($working_warehouse == -1)
+        if($working_warehouse == -1){
            $session->set('working_warehouse', $obj_warehouse);
+           return true;
+        }
 
        return false;
 
@@ -350,6 +384,10 @@ class DefaultController extends Controller
         $doctrine = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $resp = new JsonResponse();
+
+        $current_cost = $session->get('current_cost',0);
+
+        $unlock_those_elements_on_view = array();
 
         $locked_repository = $doctrine->getRepository("WHBundle:Locked");
         $locked = $locked_repository->findOneBy(array(
@@ -367,8 +405,7 @@ class DefaultController extends Controller
                 return $resp; 
             }
 
-        $locked_id = $locked->getId();
-        $doctrine->remove($locked);
+        $locked_id = $locked->getId();        
         $stack = $session->get('stack', array());
 
         if(count($stack) == 0){
@@ -382,12 +419,142 @@ class DefaultController extends Controller
 
         $to_remove = array($locked_id);
         $stack = array_diff($stack, $to_remove);
+        
+
+        switch ($locked->getTableName()) {
+            case 'imei':
+                $imei = $doctrine->getRepository("WHBundle:Imei")->find($locked->getTableId());
+                $imei->setLocked(0);
+                $doctrine->persist($imei);
+                $doctrine->flush();
+                array_push($unlock_those_elements_on_view, array(
+                    "table_name"=>"imei",
+                     "table_id"=>$locked->getTableId()));
+                $current_cost -= $imei->getProduct()->getUnitaryPrice();
+
+            case 'master':
+                $master = $doctrine->getRepository("WHBundle:Master")->find($locked->getTableId());
+                $master->setLocked(0);
+
+                array_push($unlock_those_elements_on_view, array(
+                    "table_name"=>"master",
+                     "table_id"=>$locked->getTableId()));
+
+                $doctrine->persist($master);
+                $doctrine->flush();
+
+                foreach ($master->getImeis() as $imei) {
+
+                    $imei_locked = $locked_repository->findOneBy(array(
+                        "table_name"=>"imei",
+                         "table_id"=>$imei->getId()));
+                    
+                    if($imei_locked){
+                        
+                        array_push($unlock_those_elements_on_view, array(
+                            "table_name"=>"imei",
+                             "table_id"=>$imei->getId()
+                            ));
+
+                        $to_remove = array($imei_locked->getId());
+                        $stack = array_diff($stack, $to_remove);
+
+                        $doctrine->remove($imei_locked);
+                        $doctrine->flush();
+
+                        $imei->setLocked(0);
+                        $doctrine->persist($imei);
+                        $doctrine->flush();
+
+                        $current_cost -= $imei->getProduct()->getUnitaryPrice();
+
+                    }
+                }
+                break;
+
+            case 'pallet':
+
+                $pallet = $doctrine->getRepository("WHBundle:Pallet")->find($locked->getTableId());
+                $pallet->setLocked(0);
+
+                $doctrine->persist($pallet);
+                $doctrine->flush();
+
+                array_push($unlock_those_elements_on_view, array(
+                    "table_name"=>"pallet",
+                     "table_id"=>$locked->getTableId()));
+
+                foreach ($pallet->getMasters() as $master) {
+
+                    $_locked_master = $locked_repository->findOneBy(array(
+                            "table_name"=>"master",
+                             "table_id"=>$master->getId()));
+
+                    if($_locked_master){
+
+                        $to_remove = array($_locked_master->getId());
+                        $stack = array_diff($stack, $to_remove);
+
+                        $doctrine->remove($_locked_master);
+                        $doctrine->flush();
+
+                        $master->setLocked(0);
+                        $doctrine->persist($master);
+                        $doctrine->flush();
+
+                        array_push($unlock_those_elements_on_view, array(
+                            "table_name"=>"master",
+                             "table_id"=>$master->getId()
+                             ));
+
+                    }
+                 
+                    foreach ($master->getImeis() as $imei) {
+
+                        $imei_locked = $locked_repository->findOneBy(array(
+                            "table_name"=>"imei",
+                             "table_id"=>$imei->getId()));
+                        
+                        if($imei_locked){
+                            
+                            $to_remove = array($imei_locked->getId());
+                            $stack = array_diff($stack, $to_remove);
+
+                            $doctrine->remove($imei_locked);
+                            $doctrine->flush();
+
+                            $imei->setLocked(0);
+                            $doctrine->persist($imei);
+                            $doctrine->flush();
+
+                            array_push($unlock_those_elements_on_view, array(
+                                "table_name"=>"imei",
+                                 "table_id"=>$imei->getId()
+                                 ));
+
+                            $current_cost -= $imei->getProduct()->getUnitaryPrice();
+
+                        }
+                    }
+            }
+            
+            default:
+                # code...
+                break;
+        }
+
         $session->set('stack', $stack);
+        $session->set('current_cost', $current_cost);
+
+        $doctrine->remove($locked);
+        $doctrine->flush();
 
         $resp->setData(array(
                     "ok" => true,
                     "error_type" => "",
-                    "msg" => "Element unmarked from shipment."
+                    "current_cost" => $current_cost,
+                    "msg" => "Elements unmarked from shipment.",
+                    "unlock_this" => $unlock_those_elements_on_view
                     ));
         return $resp;
 

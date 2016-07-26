@@ -44,7 +44,8 @@ class LoadImeiData extends AbstractFixture implements OrderedFixtureInterface
 
     private function generate_a_imei($masters, $products){
 
-    	$new_imei = new Imei();    
+    	$new_imei = new Imei();
+        $new_imei->setNotTransferable(0);    
         $new_imei->setLocked(0);    
         $random_code = "Im_" . base64_encode(random_bytes(6));
         $new_imei->setCode($random_code);

@@ -18,4 +18,5 @@
 /web/css/*
 /web/fonts/*
 !/web/js/wh.js
+!/web/js/notify.min.js
 !/web/css/wh.css
