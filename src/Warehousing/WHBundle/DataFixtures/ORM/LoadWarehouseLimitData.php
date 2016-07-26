@@ -26,7 +26,8 @@ class LoadWarehouseLimitData extends AbstractFixture implements OrderedFixtureIn
                 $manager->persist($new_wl);
 
                 $rev = new WarehouseLimits();
-                $limit = random_int(1, 15) / random_int(1, 10);
+                $part = rand(0, 30) / 30;
+                $limit = 30 * $part;
                 $rev->setWarehouseOrigin($warehouses[$j]);
                 $rev->setWarehouseTarget($warehouses[$i]);
                 $rev->setWhLimit($limit);

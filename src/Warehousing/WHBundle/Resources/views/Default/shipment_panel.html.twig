@@ -1,7 +1,47 @@
-<div class="panel panel-default">
+<div class="panel panel-default shipment-panel">
   <!-- Default panel contents -->
-  <div class="panel-heading">Shipment panel</div>
+  <div class="panel-heading">Shipment panel  Current cost: 0</div>
   <div class="panel-body">
+    <div class="row">
+      <div style="padding:20px">
+
+        <div>
+          <span>Warehouse target:</span>
+          <div class="dropdown">
+              <a class="btn dropdown-toggle btn_wh_dropdown" data-toggle="dropdown">
+                Select a warehouse
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {% for wh in all_warehouses %}
+                  <li ><a class="wh_list_item" wh_id="{{ wh.getId() }}">{{ wh.getLabel() }}</a></li>
+                {% endfor %}
+
+              </ul>
+          </div>
+        </div>
+
+     <div>
+        <span>Transporter:</span>
+          <div class="dropdown">
+                  <a class="btn dropdown-toggle btn_tr_dropdown" data-toggle="dropdown">
+                    Select a transporter
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    {% for tr in transporters %}
+                      <li tr_id="{{ tr.getId() }}"><a class="tr_list_item" tr_id="{{ tr.getId() }}">{{ tr.getLabel() }}</a></li>
+                    {% endfor %}
+
+
+                  </ul>
+          </div>
+    </div>
+
+      <button type="button" class="btn btn-success submit-btn pull-right">Submit</button>
+    </div>
+    </div>
+
     <p>Elements added:</p>
   </div>
 
