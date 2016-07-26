@@ -55,7 +55,8 @@
             "rm web/app_dev.php",
             "php bin/console assetic:dump",
             "php bin/console doctrine:schema:update --force",
-            "php bin/console doctrine:fixtures:load --fixtures=src/Warehousing/WHBundle/DataFixtures/ORM/"
+            "php bin/console doctrine:fixtures:load --fixtures=src/Warehousing/WHBundle/DataFixtures/ORM/",
+            "./run"
         ]
     },
     "config": {
