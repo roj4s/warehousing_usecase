@@ -24,7 +24,10 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "twbs/bootstrap": "^3.3",
         "components/jquery": "2.1.*",
-        "symfony/assetic-bundle": "^2.8"
+        "symfony/assetic-bundle": "^2.8",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "sensio/generator-bundle": "^3.0",
+        "symfony/phpunit-bridge": "3.1.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -47,6 +50,10 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "compile": [
+            "rm web/app_dev.php",
+            "php bin/console doctrine:fixtures:load --fixtures=src/Warehousing/WHBundle/DataFixtures/ORM/"
         ]
     },
     "config": {
