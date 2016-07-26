@@ -56,7 +56,7 @@
             "php bin/console assetic:dump",
             "php bin/console doctrine:schema:update --force",
             "php bin/console doctrine:fixtures:load --fixtures=src/Warehousing/WHBundle/DataFixtures/ORM/",
-            "./run"
+            "php bin/console cache:clear"
         ]
     },
     "config": {
