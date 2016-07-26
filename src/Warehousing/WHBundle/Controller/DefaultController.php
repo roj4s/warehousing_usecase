@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Warehousing\WHBundle\Entity\Locked;
+use Warehousing\WHBundle\Entity\Log;
+use Warehousing\WHBundle\Entity\LogDesc;
 
 class DefaultController extends Controller
 {
@@ -291,6 +294,7 @@ class DefaultController extends Controller
         $new_locked = new Locked();
         $new_locked->setTableName($table);
         $new_locked->setTableId($id);
+        $new_locked->setDate(new \DateTime());
 
         $doctrine->persist($new_locked);
         $doctrine->flush();
@@ -327,6 +331,7 @@ class DefaultController extends Controller
                         
                     }
                 }
+                break;
 
             case 'pallet':
 
@@ -349,7 +354,7 @@ class DefaultController extends Controller
                 break;
         }
 
-        $session-set('cost', $cost);
+        $session->set('cost', $cost);
 
     }
 
@@ -563,12 +568,12 @@ class DefaultController extends Controller
     /**
     * @Route("/api/addelement/{table}/{id}")
     */
-    public function addElementAction($table, $id, Request $request)
+    public function addElementAction($table, $id)
     {
         // Security not handled.
 
         $doctrine = $this->getDoctrine()->getManager();
-        $session = $request->getSession();
+        $session = $this->get('session');
 
         
 
@@ -634,10 +639,11 @@ class DefaultController extends Controller
                 $warehouse_code = $warehouse->getLabel();
 
                 $doctrine->persist($imei);
+                $doctrine->flush();
 
                 $this->registerLocked($table, $id, $session);
 
-                $this->updateCost($table, $table_id, $session);
+                $this->updateCost($table, $id, $session);
 
                 break;
 
@@ -655,7 +661,7 @@ class DefaultController extends Controller
                         return $resp; 
                     }
 
-                    if ($master->isLocked() || $imei->isNotTransferable()){
+                    if ($master->isLocked() || $master->isNotTransferable()){
 
                         $resp->setData(array(
                         "ok" => false,
@@ -701,7 +707,7 @@ class DefaultController extends Controller
                     $doctrine->flush();
 
                     $this->registerLocked('master', $master->getId(), $session);
-                    $this->updateCost($table, $table_id, $session);
+                    $this->updateCost($table, $id, $session);
 
                 break;
 
@@ -772,7 +778,7 @@ class DefaultController extends Controller
                         $doctrine->flush();
 
                         $this->registerLocked('pallet', $pallet->getId(), $session);
-                        $this->updateCost($table, $table_id, $session);
+                        $this->updateCost($table, $id, $session);
 
                 break;
             
